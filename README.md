@@ -109,3 +109,21 @@ MediFlow/
 │   └── medicos.html
 │
 └── requirements.txt
+```
+
+👨‍💻 Autor
+<div align="center">
+
+<h3>Hiann Alexander Mendes de Oliveira</h3>
+
+<p> 🎓 Estudante de Sistemas de Informação - IF Goiano (Campus Urutaí)
+
+
+💻 Desenvolvedor Backend 
+
+
+📍 Goiânia, Goiás </p>
+
+<a href="https://www.linkedin.com/in/hiann-alexander" target="_blank"> <img src="https://img.shields.io/badge/LinkedIn-Conectar-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"> </a>
+
+</div>
