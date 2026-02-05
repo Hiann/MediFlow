@@ -111,7 +111,6 @@ MediFlow/
 └── requirements.txt
 ```
 
-👨‍💻 Autor
 <div align="center">
 
 <h3>Hiann Alexander Mendes de Oliveira</h3>
