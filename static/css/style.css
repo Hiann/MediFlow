@@ -1,0 +1,179 @@
+:root {
+    /* --- TEMA CLARO (Padrão) --- */
+    --primary-color: #0d9488;       /* Teal Médico */
+    --primary-hover: #0f766e;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    
+    --bg-body: #f0f9ff;             /* Azul Alice muito suave */
+    --bg-glass: rgba(255, 255, 255, 0.85); /* Vidro Claro */
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --border-color: rgba(255, 255, 255, 0.6);
+    --shadow-card: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+}
+
+[data-bs-theme="dark"] {
+    /* --- TEMA ESCURO (Dark Mode) --- */
+    --primary-color: #2dd4bf;       /* Teal Neon Suave */
+    --primary-hover: #14b8a6;
+    --bg-body: #0f172a;             /* Slate 900 (Fundo Escuro Profundo) */
+    --bg-glass: rgba(30, 41, 59, 0.75); /* Vidro Escuro */
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.05);
+    --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --navbar-bg: rgba(15, 23, 42, 0.95);
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    /* Imagem de fundo sutil para dar profundidade ao vidro */
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* --- GLASSMORPHISM CARDS --- */
+.card-clean {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-clean:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+}
+
+.card-header-clean {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+}
+
+/* --- NAVBAR --- */
+.navbar-custom {
+    background: var(--navbar-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    transition: background-color 0.4s ease;
+}
+
+.brand-logo {
+    color: var(--primary-color);
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-link {
+    color: var(--text-main);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color);
+}
+
+/* --- ELEMENTOS DE FORMULÁRIO --- */
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    transition: all 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+    color: var(--text-main);
+}
+
+/* --- BOTÕES --- */
+.btn-medical {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-medical:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+    color: #fff;
+}
+
+/* --- BADGES E TABELAS --- */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-main);
+    --bs-table-hover-bg: rgba(255,255,255,0.05);
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-agendado { background-color: rgba(14, 165, 233, 0.15); color: #0ea5e9; border: 1px solid rgba(14, 165, 233, 0.3); }
+.status-concluido { background-color: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+/* --- TEXTOS --- */
+h2, h3, h4, h5 { color: var(--text-main); }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Botão de Tema */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.theme-toggle-btn:hover {
+    background-color: var(--bg-glass);
+    color: var(--primary-color);
+}

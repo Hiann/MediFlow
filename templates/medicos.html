@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card card-clean h-100">
+            <div class="card-header-clean d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="bi bi-person-plus me-2"></i> <span id="formTitle">Novo Profissional</span>
+                </span>
+                <button type="button" class="btn btn-sm btn-light rounded-circle d-none" id="cancelEditBtn" onclick="resetForm()" title="Cancelar Edição">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="card-body p-4">
+                <form id="doctor-form">
+                    <input type="hidden" id="docId">
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Nome Completo</label>
+                        <input type="text" class="form-control" id="docName" placeholder="Dr. Nome Sobrenome" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Especialidade</label>
+                        <select class="form-select" id="docSpec" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="Cardiologia">Cardiologia</option>
+                            <option value="Clínico Geral">Clínico Geral</option>
+                            <option value="Dermatologia">Dermatologia</option>
+                            <option value="Pediatria">Pediatria</option>
+                            <option value="Ortopedia">Ortopedia</option>
+                            <option value="Neurologia">Neurologia</option>
+                            <option value="Ginecologia">Ginecologia</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-medical w-100" id="saveBtn">
+                        <i class="bi bi-save me-1"></i> Salvar Médico
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <h4 class="fw-bold mb-3 ms-1">Corpo Clínico</h4>
+        <div class="row g-3">
+            {% for doc in doctors %}
+            <div class="col-md-6">
+                <div class="card card-clean border-0 h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-person-lines-fill fs-4"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h6 class="fw-bold mb-0 text-truncate">{{ doc.name }}</h6>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary mt-1 fw-normal">
+                                {{ doc.specialty }}
+                            </span>
+                        </div>
+                        
+                        <div class="ms-auto dropdown">
+                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical text-muted"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center gap-2" onclick="editDoctor('{{ doc.id }}', '{{ doc.name }}', '{{ doc.specialty }}')">
+                                        <i class="bi bi-pencil-square text-primary"></i> Editar
+                                    </button>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center gap-2 text-danger" onclick="deleteDoctor('{{ doc.id }}')">
+                                        <i class="bi bi-trash"></i> Excluir
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="bi bi-people fs-1 mb-2 d-block"></i>
+                Nenhum médico cadastrado ainda.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Função para carregar dados no formulário (Modo Edição)
+function editDoctor(id, name, specialty) {
+    document.getElementById('docId').value = id;
+    document.getElementById('docName').value = name;
+    document.getElementById('docSpec').value = specialty;
+    
+    // Altera visual do formulário
+    document.getElementById('formTitle').innerText = "Editar Profissional";
+    document.getElementById('saveBtn').innerHTML = '<i class="bi bi-check-lg me-1"></i> Atualizar';
+    document.getElementById('cancelEditBtn').classList.remove('d-none');
+    
+    // Scroll suave até o form (útil no mobile)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Função para Resetar o Formulário (Voltar ao Modo Criação)
+function resetForm() {
+    document.getElementById('doctor-form').reset();
+    document.getElementById('docId').value = "";
+    
+    document.getElementById('formTitle').innerText = "Novo Profissional";
+    document.getElementById('saveBtn').innerHTML = '<i class="bi bi-save me-1"></i> Salvar Médico';
+    document.getElementById('cancelEditBtn').classList.add('d-none');
+}
+
+// Salvar (Criar ou Atualizar)
+document.getElementById('doctor-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const id = document.getElementById('docId').value;
+    const isEdit = id ? true : false;
+    
+    const data = {
+        name: document.getElementById('docName').value,
+        specialty: document.getElementById('docSpec').value
+    };
+    
+    let url = '/api/doctors/';
+    let method = 'POST';
+    
+    if (isEdit) {
+        url = `/api/doctors/${id}`;
+        method = 'PUT';
+    }
+    
+    try {
+        const res = await fetch(url, {
+            method: method,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: isEdit ? 'Atualizado!' : 'Cadastrado!',
+                text: 'Operação realizada com sucesso.',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => window.location.reload());
+        } else {
+            Swal.fire('Erro', 'Não foi possível salvar.', 'error');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+// Deletar Médico
+async function deleteDoctor(id) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: "Essa ação removerá o médico do sistema.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sim, excluir',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch(`/api/doctors/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Excluído!',
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => window.location.reload());
+            } else {
+                Swal.fire('Erro', 'Erro ao excluir médico.', 'error');
+            }
+        } catch (err) { console.error(err); }
+    }
+}
+</script>
+{% endblock %}

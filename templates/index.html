@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-5 align-items-end">
+    <div class="col-md-8">
+        <span class="badge bg-primary bg-opacity-10 text-primary mb-2 px-3 py-2 rounded-pill">Visão Geral</span>
+        <h1 class="fw-bold display-6 mb-1">Agenda do Dia</h1>
+        <p class="text-muted mb-0">Gerencie seus pacientes e horários com eficiência.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="/agendar" class="btn btn-medical shadow-lg">
+            <i class="bi bi-plus-lg me-2"></i> Agendar Paciente
+        </a>
+    </div>
+</div>
+
+<div class="card card-clean border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive rounded-4">
+            <table class="table table-hover align-middle mb-0" style="min-width: 700px;">
+                <thead style="background-color: rgba(0,0,0,0.02);">
+                    <tr>
+                        <th class="ps-4 py-4 text-muted text-uppercase small fw-bold">Horário</th>
+                        <th class="text-muted text-uppercase small fw-bold">Paciente</th>
+                        <th class="text-muted text-uppercase small fw-bold">Médico</th>
+                        <th class="text-muted text-uppercase small fw-bold text-center">Status</th>
+                        <th class="text-end pe-4 text-muted text-uppercase small fw-bold">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 text-primary rounded p-2 me-3 text-center" style="min-width: 50px;">
+                                    <strong class="d-block fs-5">{{ appt.date_time.strftime('%H:%M') }}</strong>
+                                </div>
+                                <div class="text-muted small">
+                                    {{ appt.date_time.strftime('%d/%m') }}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-bold fs-6">{{ appt.patient_name }}</div>
+                            <div class="d-flex align-items-center text-muted small mt-1">
+                                <i class="bi bi-telephone me-1"></i> {{ appt.patient_phone }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center me-2" style="width:32px; height:32px;">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                <span>Dr(a). {{ appt.doctor.name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span class="status-badge status-agendado">{{ appt.status }}</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-light border rounded-circle" title="Editar" style="width:32px; height:32px;">
+                                <i class="bi bi-pencil text-muted"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="py-4 opacity-50">
+                                <i class="bi bi-calendar2-heart fs-1 d-block mb-3 text-muted"></i>
+                                <h5 class="fw-normal text-muted">Nenhuma consulta agendada</h5>
+                                <p class="small text-muted">Sua agenda está livre por enquanto.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
